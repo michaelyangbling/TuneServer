@@ -14,7 +14,7 @@ var cors = require('cors');
 
 
 //remote
-app.use(cors({credentials: true, origin: 'https://tune-s.herokuapp.com/'}));
+app.use(cors({credentials: true, origin: 'https://tune-s.herokuapp.com'}));
 
 // var allowCrossDomain = function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*"); // allow requests from any other server
