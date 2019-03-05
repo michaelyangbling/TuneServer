@@ -1,10 +1,10 @@
-var express = require('express')
-var app = express()
+const express = require('express')
+const app = express()
 
 // A && B returns the value A if A can be coerced into false; otherwise, it returns B.
 // A || B returns the value A if A can be coerced into true; otherwise, it returns B.
-var request = require('request'); // "Request" library
-var cors = require('cors');
+const request = require('request'); // "Request" library
+const cors = require('cors');
 
 
 // Then use it before your routes are set up:
@@ -24,11 +24,11 @@ app.use(cors({credentials: true, origin: 'https://tune-s.herokuapp.com'}));
 // app.use(allowCrossDomain); // plumbing it in as middleware
 
 
-var client_id = 'a1e8617e0c7648d99634ae3a3d192590'; // Your client id, han's
-var client_secret = '1215139e9bc046329a2e24582f5863b3'; // Your secret
+const client_id = 'a1e8617e0c7648d99634ae3a3d192590'; // Your client id, han's
+const client_secret = '1215139e9bc046329a2e24582f5863b3'; // Your secret
 
 // your application requests authorization
-var authOptions = {
+const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
         'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
@@ -40,21 +40,54 @@ var authOptions = {
 };
 
 
-// respond with "hello world" when a GET request is made to the homepage
 app.get('/api/search/:search', function (req, res) {
-    console.log(req.params.search, 1)
+    //console.log(req.params.search, 1)
 
 
     request.post(authOptions, function(error, response, body) {
         if (!error && response.statusCode === 200) {
 
             // use the access token to access the Spotify Web API
-            var token = body.access_token;
+            let token = body.access_token;
 
             //https://api.spotify.com/v1/search?q=Muse&type=track
-            var options2 = {
+            let options2 = {
                 url: 'https://api.spotify.com/v1/search?q=' + req.params.search +
                     "&type=track",
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                json: true
+            };
+            //console.log(req.params.search)
+            //res.json({me: 1})
+            request.get(options2, function(error, response, body) {
+
+                //error handling here can be better
+
+                //console.log(body);
+                res.json(body)//send first one met
+            });
+
+            //res.send('hello world')
+
+        }
+    });
+})
+
+app.get('/api/track/:id', function (req, res) {
+    //console.log(req.params.search, 1)
+
+
+    request.post(authOptions, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+
+            // use the access token to access the Spotify Web API
+            let token = body.access_token;
+
+            //https://api.spotify.com/v1/search?q=Muse&type=track
+            let options2 = {
+                url: 'https://api.spotify.com/v1/tracks/' + req.params.id,
                 headers: {
                     'Authorization': 'Bearer ' + token
                 },
