@@ -8,7 +8,9 @@ var cors = require('cors');
 
 
 // Then use it before your routes are set up:
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
+//app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: 'https://tune-s.herokuapp.com/'}));
 
 // var allowCrossDomain = function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*"); // allow requests from any other server
