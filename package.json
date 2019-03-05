@@ -11,7 +11,7 @@
     "request": "~2.83.0"
   },
   "scripts": {
-    "start": "node index.js" //a must for node to run successfully
+    "start": "node index.js"
   }
 }
 
