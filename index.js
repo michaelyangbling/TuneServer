@@ -1,10 +1,24 @@
 var express = require('express')
 var app = express()
 
-
+// A && B returns the value A if A can be coerced into false; otherwise, it returns B.
+// A || B returns the value A if A can be coerced into true; otherwise, it returns B.
 var request = require('request'); // "Request" library
+var cors = require('cors');
 
-var client_id = 'a1e8617e0c7648d99634ae3a3d192590'; // Your client id
+
+// Then use it before your routes are set up:
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
+// var allowCrossDomain = function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*"); // allow requests from any other server
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE'); // allow these verbs
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");}
+//
+// app.use(allowCrossDomain); // plumbing it in as middleware
+
+
+var client_id = 'a1e8617e0c7648d99634ae3a3d192590'; // Your client id, han's
 var client_secret = '1215139e9bc046329a2e24582f5863b3'; // Your secret
 
 // your application requests authorization
@@ -22,7 +36,7 @@ var authOptions = {
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/api/search/:search', function (req, res) {
-
+    console.log(req.params.search, 1)
 
 
     request.post(authOptions, function(error, response, body) {
@@ -40,13 +54,14 @@ app.get('/api/search/:search', function (req, res) {
                 },
                 json: true
             };
-            res.json({me: 1})
+            //console.log(req.params.search)
+            //res.json({me: 1})
             request.get(options2, function(error, response, body) {
 
                 //error handling here can be better
 
                 //console.log(body);
-                //res.json(body)
+                res.json(body)//send first one met
             });
 
             //res.send('hello world')
@@ -55,6 +70,7 @@ app.get('/api/search/:search', function (req, res) {
     });
 })
 
-app.listen('8050')
+const port = process.env.PORT || 5000;//heroku or local
+app.listen(port)
 
 
